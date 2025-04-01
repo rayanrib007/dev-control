@@ -11,12 +11,12 @@ export default function CHeaderDefault() {
             <span>CONTROLE</span>
           </h1>
         </Link>
-        <nav className="flex items-center gap-2 ml-auto">
+        <nav className="flex items-center gap-4 ml-auto">
           <Link href="/dashboard">
-            <FiUser />
+            <FiUser size={26} color="#4b5563" />
           </Link>
           <button>
-            <FiLogOut />
+            <FiLogOut size={26} color="#4b5563" />
           </button>
         </nav>
       </div>
