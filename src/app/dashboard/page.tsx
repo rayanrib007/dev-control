@@ -1,9 +1,14 @@
-import CCenterContentOnPage from "@/components/generals/CCenterContentOnPage";
+import CTNViewDashboard from "@/containers/dashboard/CTNViewDashboard";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
-export default function PDashboard() {
-  return (
-    <CCenterContentOnPage>
-      <h1>página dahsboard</h1>
-    </CCenterContentOnPage>
-  );
+export default async function PDashboard() {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user) {
+    return redirect("/");
+  }
+
+  return <CTNViewDashboard />;
 }
