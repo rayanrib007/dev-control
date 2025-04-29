@@ -1,14 +1,13 @@
-import CTNViewClients from "@/containers/dashboard/clients/CTNViewClients";
+import CTNNewClient from "@/containers/dashboard/clients/CTNNewClient";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-export default async function PClients() {
+export default async function PNewClient() {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
     return redirect("/");
   }
-
-  return <CTNViewClients />;
+  return <CTNNewClient />;
 }
