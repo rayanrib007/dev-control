@@ -1,5 +1,6 @@
 "use client";
 
+import { CInputDinamicWidth } from "@/components/generals/CUiLib";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -30,14 +31,63 @@ type FormData = z.infer<typeof schema>;
 export default function CClientRegisterForm() {
   const {
     register,
-    handleSubimt,
+    handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
+  function handleRegisterForm(data: FormData) {
+    console.log(data);
+  }
+
   return (
-    <form action="">
-      <label htmlFor="">Nome completo</label>
-      <input type="text" placeholder="Digite seu nome completo" />
+    <form
+      onSubmit={handleSubmit(handleRegisterForm)}
+      className="flex flex-col mt-6"
+    >
+      <label className="mb-1 text-lg font-medium">Nome completo</label>
+      <CInputDinamicWidth
+        name="name"
+        type="text"
+        placeholder="Digite seu nome completo..."
+        error={errors.name?.message}
+        register={register}
+      />
+      <section className="flex flex-col md:flex-row my-2 gap-0 md:gap-2">
+        <div className="flex-1">
+          <label className="mb-1 text-lg font-medium">Telefone</label>
+          <CInputDinamicWidth
+            name="phone"
+            type="text"
+            placeholder="(DD)999999999"
+            error={errors.phone?.message}
+            register={register}
+          />
+        </div>
+        <div className="flex-1">
+          <label className="mb-1 text-lg font-medium">Email</label>
+          <CInputDinamicWidth
+            name="email"
+            type="email"
+            placeholder="Digite seu email..."
+            error={errors.email?.message}
+            register={register}
+          />
+        </div>
+      </section>
+      <label className="mb-1 text-lg font-medium">Endereço</label>
+      <CInputDinamicWidth
+        name="address"
+        type="text"
+        placeholder="Digite seu endereço do cliente..."
+        error={errors.address?.message}
+        register={register}
+      />
+      <button
+        type="submit"
+        className="bg-blue-500 my-4 px-2 h-11 rounded text-white font-bold cursor-pointer"
+      >
+        Cadastrar
+      </button>
     </form>
   );
 }
