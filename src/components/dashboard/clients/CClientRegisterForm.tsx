@@ -1,7 +1,9 @@
 "use client";
 
 import { CInputDinamicWidth } from "@/components/generals/CUiLib";
+import api from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -29,19 +31,24 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function CClientRegisterForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  function handleRegisterForm(data: FormData) {
-    console.log(data);
+  async function handleRegisterClient(data: FormData) {
+    const response = await api.post("/api/client", data);
+
+    if (response.status === 200) {
+      router.push("/dashboard/clients");
+    }
   }
 
   return (
     <form
-      onSubmit={handleSubmit(handleRegisterForm)}
+      onSubmit={handleSubmit(handleRegisterClient)}
       className="flex flex-col mt-6"
     >
       <label className="mb-1 text-lg font-medium">Nome completo</label>
