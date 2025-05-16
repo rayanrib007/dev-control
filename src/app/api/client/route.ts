@@ -27,9 +27,41 @@ export async function POST(request: Request) {
     });
     return NextResponse.json({ type: "success", message: "success", data });
   } catch (error) {
-    return NextResponse.json({
-      type: "fail",
-      message: "Falha interna do servidor",
+    return NextResponse.json(
+      {
+        type: "fail",
+        message: "Falha interna do servidor",
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json(
+        {
+          type: "fail",
+          message: "N.A.",
+        },
+        { status: 401 }
+      );
+    }
+    const data = await prismaClient.customer.findMany({
+      where: {
+        userId: session.user.id,
+      },
     });
+    return NextResponse.json({ type: "success", message: "success", data });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        type: "fail",
+        message: "Falha interna do servidor",
+      },
+      { status: 500 }
+    );
   }
 }

@@ -42,6 +42,7 @@ export default function CClientRegisterForm() {
     const response = await api.post("/api/client", data);
 
     if (response.status === 200) {
+      router.refresh();
       router.push("/dashboard/clients");
     }
   }
