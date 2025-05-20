@@ -17,6 +17,11 @@ export default function CTNViewClients() {
     setClientsData(response.data.data);
   }
 
+  async function handleDeleteClient(clientId: string) {
+    await api.delete(`/api/client/`, { data: { clientId } });
+    getClientsData();
+  }
+
   useEffect(() => {
     getClientsData();
   }, []);
@@ -37,7 +42,11 @@ export default function CTNViewClients() {
           clientsData.length > 0 ? (
             <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
               {clientsData.map((clientData) => (
-                <CViewClientsCard key={clientData.id} clientData={clientData} />
+                <CViewClientsCard
+                  key={clientData.id}
+                  clientData={clientData}
+                  handleDeleteClient={handleDeleteClient}
+                />
               ))}
             </section>
           ) : (

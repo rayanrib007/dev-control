@@ -65,3 +65,47 @@ export async function GET(request: Request) {
     );
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json(
+        {
+          type: "fail",
+          message: "N.A.",
+        },
+        { status: 401 }
+      );
+    }
+    const clientId: { clientId: string } = await request.json();
+    const data = await prismaClient.customer.findUnique({
+      where: {
+        id: clientId.clientId,
+      },
+    });
+    if (!data) {
+      return NextResponse.json(
+        {
+          type: "fail",
+          message: "N.E.",
+        },
+        { status: 400 }
+      );
+    }
+    await prismaClient.customer.delete({
+      where: {
+        id: clientId.clientId,
+      },
+    });
+    return NextResponse.json({ type: "success", message: "success", data });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        type: "fail",
+        message: "Falha interna do servidor",
+      },
+      { status: 500 }
+    );
+  }
+}
