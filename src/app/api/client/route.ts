@@ -93,6 +93,24 @@ export async function DELETE(request: Request) {
         { status: 400 }
       );
     }
+
+    const findTickets = await prismaClient.ticket.findMany({
+      where: {
+        customerId: clientId.clientId,
+      },
+    });
+
+    if (!findTickets) {
+      return NextResponse.json(
+        {
+          type: "fail",
+          message:
+            "Não foi possivel deletar cliente (possui chamando em aberto)",
+        },
+        { status: 400 }
+      );
+    }
+
     await prismaClient.customer.delete({
       where: {
         id: clientId.clientId,
