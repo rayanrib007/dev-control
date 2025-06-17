@@ -5,7 +5,11 @@ import api from "@/lib/api";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export default function CTNViewDashboardForm() {
+export default function CTNViewDashboardForm({
+  fHandleRegisterTicket,
+}: {
+  fHandleRegisterTicket: (formData: FormData) => void;
+}) {
   const [isLoading, setIsLoading] = useState(true);
   const [clientsData, setClientsData] = useState<IClientDataProtocol[]>([]);
 
@@ -33,24 +37,29 @@ export default function CTNViewDashboardForm() {
           <h1 className="text-3xl font-bold">Novo Chamado</h1>
         </div>
         {!isLoading ? (
-          <form className="flex flex-col mt-6">
+          <form className="flex flex-col mt-6" action={fHandleRegisterTicket}>
             <label className="mb-1 font-medium text-lg">Nome do chamado</label>
             <input
               className="w-full border-2 border-gray-300 rounded-md px-2 mb-2 h-11"
               type="text"
               placeholder="Digite o nome do chamado..."
+              name="name"
             />
             <label className="mb-1 font-medium text-lg">Nome do chamado</label>
             <textarea
               className="w-full border-2 border-gray-300  rounded-md px-2 mb-2 h-24 resize-none"
               placeholder="Descreva o problema..."
+              name="description"
             ></textarea>
             <label className="mb-1 font-medium text-lg">
               Selecione o cliente
             </label>
             {clientsData.length > 0 ? (
               <>
-                <select className="w-full border-2 border-gray-300 rounded-md px-2 mb-2 h-11 bg-white">
+                <select
+                  className="w-full border-2 border-gray-300 rounded-md px-2 mb-2 h-11 bg-white"
+                  name="client"
+                >
                   {clientsData.map((client) => (
                     <option key={client.id} value={client.id}>
                       {client.name}
