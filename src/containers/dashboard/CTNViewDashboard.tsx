@@ -1,8 +1,27 @@
+"use client";
+
 import CViewTicketTable from "@/components/dashboard/CViewTicketTable";
 import CCenterContentOnPage from "@/components/generals/CCenterContentOnPage";
+import { ITicketDataProtocol } from "@/interfaces/ITickets";
+import api from "@/lib/api";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function CTNViewDashboard() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [ticketsData, setTicketsData] = useState<ITicketDataProtocol[]>([]);
+
+  async function handleGetTicketsData() {
+    setIsLoading(true);
+    const response = await api.get("/api/ticket/");
+    setIsLoading(false);
+    setTicketsData(response.data.data);
+  }
+
+  useEffect(() => {
+    handleGetTicketsData();
+  }, []);
+
   return (
     <CCenterContentOnPage>
       <main className="mt-9 mb-2">
@@ -15,7 +34,11 @@ export default function CTNViewDashboard() {
             Abrir chamado
           </Link>
         </div>
-        <CViewTicketTable />
+        {isLoading ? (
+          <p>Carregando...</p>
+        ) : (
+          ticketsData && <CViewTicketTable ticketsData={ticketsData} />
+        )}
       </main>
     </CCenterContentOnPage>
   );
