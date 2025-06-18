@@ -37,7 +37,17 @@ export default function CTNViewDashboard() {
         {isLoading ? (
           <p>Carregando...</p>
         ) : (
-          ticketsData && <CViewTicketTable ticketsData={ticketsData} />
+          ticketsData && (
+            <>
+              <CViewTicketTable
+                ticketsData={ticketsData}
+                fHandleGetTicketsData={handleGetTicketsData}
+              />
+              {ticketsData.length === 0 && (
+                <p className="text-gray-600">Não há chamados...</p>
+              )}
+            </>
+          )
         )}
       </main>
     </CCenterContentOnPage>
