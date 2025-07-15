@@ -8,7 +8,7 @@ export interface ITicketDataProtocol {
   updated_at: Date;
   userId: string;
   status: string;
-  desciption: string;
+  description: string;
   customerId: string;
   customer: IClientDataProtocol;
 }

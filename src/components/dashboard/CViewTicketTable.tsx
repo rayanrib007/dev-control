@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { IClientDataProtocol } from "@/interfaces/IClients";
 import { ITicketDataProtocol } from "@/interfaces/ITickets";
 import api from "@/lib/api";
+import { ModalContext } from "@/providers/modal";
 import moment from "moment";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FiFile, FiCheckSquare } from "react-icons/fi";
 
 export default function CViewTicketTable({
@@ -16,15 +18,28 @@ export default function CViewTicketTable({
     type: string;
     message: string;
   } | null>(null);
+  const { handleModalVisible, setTicket } = useContext(ModalContext);
 
   async function handleFinalizedTicket(ticketId: string) {
     try {
       await api.patch(`/api/ticket`, { id: ticketId });
       fHandleGetTicketsData();
+      setTicket(null);
     } catch (error: any) {
       setMessage({ type: "fail", message: error.message });
       setTimeout(() => setMessage(null), 2000);
     }
+  }
+
+  function handleViewModal(
+    ticket: ITicketDataProtocol,
+    client: IClientDataProtocol
+  ) {
+    setTicket({
+      ticket: ticket,
+      client: client,
+    });
+    handleModalVisible();
   }
 
   return (
@@ -71,6 +86,7 @@ export default function CViewTicketTable({
                     className="hover:cursor-pointer"
                     size={24}
                     color="#3B82F6"
+                    onClick={() => handleViewModal(ticket, ticket.customer)}
                   />
                 </button>
               </td>
