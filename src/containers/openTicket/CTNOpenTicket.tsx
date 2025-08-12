@@ -4,8 +4,9 @@ import { CInputDinamicWidth } from "@/components/generals/CUiLib";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { FiSearch } from "react-icons/fi";
+import { FiSearch, FiX } from "react-icons/fi";
 import { useState } from "react";
+import COpenTicketForm from "@/components/openTicket/COpenTicketForm";
 
 const schema = z.object({
   email: z
@@ -30,12 +31,30 @@ export default function CTNOpenTicket() {
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
+  function handleClearClient() {
+    setClient(null);
+    setValue("email", "");
+  }
+
   return (
     <div className="w-full max-w-2xl mx-auto px-2">
       <h1 className="font-bold text-3xl text-center mt-24">Abrir chamado</h1>
       <main className="flex flex-col mt-4 mb-2">
         {client ? (
-          <div></div>
+          <>
+            <div className="bg-slate-100 py-6 px-4 rounded flex items-center justify-between">
+              <p className="text-lg">
+                <strong>Cliente selecionado: </strong> {client.name}
+              </p>
+              <button
+                className="text-red-600 cursor-pointer h-11 px-2 flex items-center justify-center rounded"
+                onClick={handleClearClient}
+              >
+                {<FiX size={24} />}
+              </button>
+            </div>
+            <COpenTicketForm />
+          </>
         ) : (
           <form className="bg-slate-100 py-6 px-2 rounded">
             <div className="flex flex-col gap-3">
