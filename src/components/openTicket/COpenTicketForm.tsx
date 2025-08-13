@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { CInputDinamicWidth } from "@/components/generals/CUiLib";
 import { useForm } from "react-hook-form";
@@ -31,7 +32,7 @@ export default function COpenTicketForm() {
       />
       <label className="mb-1 font-medium text-lg">Descreva o problema</label>
       <textarea
-        className="w-full rounded-md h-24 resize-none mb-2 px-2"
+        className="w-full border-2 border-gray-300 rounded-md h-24 resize-none mb-2 px-2"
         placeholder="Descreva o seu problema..."
         id="description"
         {...register("description")}
