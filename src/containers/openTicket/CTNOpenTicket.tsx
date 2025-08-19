@@ -18,7 +18,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-type clientDataInfo = {
+export type clientDataInfo = {
   id: string;
   name: string;
 };
@@ -65,7 +65,7 @@ export default function CTNOpenTicket() {
                 {<FiX size={24} />}
               </button>
             </div>
-            <COpenTicketForm />
+            <COpenTicketForm client={client} />
           </>
         ) : (
           <form

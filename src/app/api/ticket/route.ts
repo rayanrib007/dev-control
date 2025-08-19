@@ -87,3 +87,42 @@ export async function PATCH(request: Request) {
     );
   }
 }
+
+export async function POST(request: Request) {
+  try {
+    const { clientId, name, description } = await request.json();
+
+    if (!clientId || !name || !description) {
+      return NextResponse.json(
+        {
+          type: "fail",
+          message: "Campos obrigatórios não informados",
+        },
+        { status: 400 }
+      );
+    }
+
+    const data = await prismaClient.ticket.create({
+      data: {
+        name,
+        description,
+        status: "Aberto",
+        customerId: clientId,
+      },
+    });
+
+    return NextResponse.json({
+      type: "success",
+      message: "Chamado registrado com sucesso",
+      data: null,
+    });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        type: "fail",
+        message: "Falha interna do servidor",
+      },
+      { status: 500 }
+    );
+  }
+}
