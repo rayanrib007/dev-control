@@ -3,7 +3,7 @@
 import { CInputDinamicWidth } from "@/components/generals/CUiLib";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { set, z } from "zod";
 import api from "@/lib/api";
 import { clientDataInfo } from "@/containers/openTicket/CTNOpenTicket";
 
@@ -32,6 +32,9 @@ export default function COpenTicketForm({
       description: data.description,
       clientId: client.id,
     });
+
+    setValue("name", "");
+    setValue("description", "");
   }
 
   return (

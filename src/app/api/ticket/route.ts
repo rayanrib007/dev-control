@@ -18,8 +18,10 @@ export async function GET(request: Request) {
     }
     const data = await prismaClient.ticket.findMany({
       where: {
-        userId: session.user.id,
         status: "Aberto",
+        customer: {
+          userId: session.user.id,
+        },
       },
       include: {
         customer: true,
